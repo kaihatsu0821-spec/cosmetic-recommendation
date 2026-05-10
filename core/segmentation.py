@@ -86,7 +86,7 @@ def create_beard_mask(landmarks, w, h):
 
 
 
-def create_blue_mask(img,z_scores,params,beard_mask):
+def create_blue_mask(img,lab_img,z_scores,params,beard_mask):
     
     is_dark = z_scores[:, 0] < params.l_threshold
     is_blue = z_scores[:, 2] < params.b_threshold 
@@ -96,11 +96,12 @@ def create_blue_mask(img,z_scores,params,beard_mask):
     full_blue_mask = np.zeros(beard_mask.shape, dtype=bool)
     full_blue_mask[beard_mask == 255] = blue_mask_indices
     
-    pixels = img[full_blue_mask]
+    bgr_pixels = img[full_blue_mask]
+    lab_pixels=lab_img[full_blue_mask]
 
-    if len(pixels) < params.min_beard_pixels:
-        return None, None
-    return pixels, full_blue_mask.astype(np.uint8) * 255
+    if len(bgr_pixels) < params.min_beard_pixels:
+        return None, None,None
+    return bgr_pixels,lab_pixels, full_blue_mask.astype(np.uint8) * 255
 
 def create_mask(image,parsing,class_id):
     h, w = image.shape[:2]

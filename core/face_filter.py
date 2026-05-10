@@ -31,6 +31,3 @@ def apply_filter(img, mask, target_L, target_A, target_B, strength=0.5):
     ])
 
     return cv2.cvtColor(lab, cv2.COLOR_LAB2BGR)
-
-
-

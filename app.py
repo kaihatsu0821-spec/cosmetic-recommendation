@@ -6,6 +6,7 @@ from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 from pipeline.skin import Srun_skin_pipeline
 from pipeline.filter import Srun_filter_pipeline
+from pipeline.beard import Srun_beard_pipeline
 from recommend.recommend import recommend
 from core.vision import white_float_score
 
@@ -77,13 +78,9 @@ elif st.session_state.page == "skin":
 
                 st.write("選択範囲:",paper_region)
 
-                result = Srun_skin_pipeline(
-                    image,
-                    paper_region
-                )
-
                 if st.button("分析する"):
                     result = Srun_skin_pipeline(image, paper_region)
+                    beard_s=Srun_beard_pipeline(result)
 
                     if result is None:
                         st.error("解析できませんでした")
@@ -95,13 +92,16 @@ elif st.session_state.page == "skin":
 
                     st.subheader("結果")
 
-                    
+                        
                     st.image(result.balanced_img, channels="BGR")
 
                     L, a, b = result.lab
                     st.write(f"L: {L:.2f}")
                     st.write(f"a: {a:.2f}")
                     st.write(f"b: {b:.2f}")
+
+                    st.write("青髭")
+                    st.write(beard_s.lab)
 
                     recs=recommend(result.lab,FOUNDATION_DB)
 

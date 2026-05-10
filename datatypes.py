@@ -5,9 +5,12 @@ class Params:
     blue_L_max: float = 5
     blue_A_max: float = 2
     blue_B_max: float = 2
+    l_threshold: float = 0.0
+    b_threshold: float = 0.0
+
     zL: float = 1.0
     zB: float = 0.5
-    min_beard_pixels: int = 30
+    min_beard_pixels: int = 10
 
     warm_threshold: float = 15
     cool_threshold: float = 0

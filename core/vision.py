@@ -39,7 +39,6 @@ def compute_lab_stats(img, mask):
         
     pixels[:, 0] *= 100/255
     pixels[:, 1:] -= 128
-    pixels[:, 2:] -= 128
     
     mean = np.median(pixels, axis=0) 
     std = np.std(pixels, axis=0) 
@@ -72,3 +71,24 @@ def median_skin_color(pixels):
     
 def unpack_optional_pair(data):
     return data if data else (None, None)
+
+def bgr_lab(img):
+
+    img = np.asarray(img, dtype=np.uint8)
+
+    if img.ndim == 2:
+        img = img.reshape(-1, 1, 3)
+
+        lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB).astype(np.float32)
+
+        lab[:, :, 0] *= 100 / 255
+        lab[:, :, 1:] -= 128
+
+        return lab.reshape(-1, 3)
+
+    lab = cv2.cvtColor(img, cv2.COLOR_BGR2LAB).astype(np.float32)
+
+    lab[:, :, 0] *= 100 / 255
+    lab[:, :, 1:] -= 128
+
+    return lab
